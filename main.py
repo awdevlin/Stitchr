@@ -13,7 +13,6 @@ def clicked():
     picture_format = pic_formats.get()
     index_of_first_image = int(index_entry.get())
     generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image)
-    # status["text"] = "Done!"
     update_button("black", "white", "Stitch")
 
 
