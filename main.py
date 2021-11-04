@@ -69,7 +69,6 @@ fp_row = 0
 file_path_lbl = Label(window, text="File Path", anchor="e")
 file_path_lbl.grid(column=0, row=fp_row)
 
-
 path_txt = Entry(window, width=60)
 path_txt.grid(column=1, row=fp_row, columnspan=3)
 path_txt.insert(END, "C:/Users/Sonus User/Documents/ToupView/Demo")
