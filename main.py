@@ -5,9 +5,7 @@ from PIL import Image
 
 
 def clicked():
-    status = Label(text="Stitching...")
-    status.grid(column=2, row=btn_row)
-    status.update()
+    update_button("white", "black", "Stitching...")
     chip_name = id_entry.get()
     file_path = path_entry.get() + "/"
     x_images = int(x_size_entry.get())
@@ -15,7 +13,15 @@ def clicked():
     picture_format = pic_formats.get()
     index_of_first_image = int(index_entry.get())
     generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image)
-    status["text"] = "Done!"
+    # status["text"] = "Done!"
+    update_button("black", "white", "Stitch")
+
+
+def update_button(bg, fg, text):
+    btn["bg"] = bg
+    btn["fg"] = fg
+    btn["text"] = text
+    btn.update()
 
 
 def generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image):
@@ -72,7 +78,7 @@ file_path_lbl.grid(column=0, row=fp_row)
 
 path_entry = Entry(window, width=60)
 path_entry.grid(column=1, row=fp_row, columnspan=3)
-path_entry.insert(END, "C:/Users/Sonus User/Documents/ToupView/")
+path_entry.insert(END, "C:/Users/Sonus User/Documents/ToupView/Demo Full")
 
 id_row = fp_row + 1
 id_lbl = Label(window, text="CMUT ID")
@@ -90,23 +96,23 @@ x_size_entry = Entry(window)
 x_size_entry.grid(column=1, row=xsize_row)
 x_size_entry.insert(END, 7)
 
-ysize_row = xsize_row + 1
+y_size_row = xsize_row + 1
 y_size_lbl = Label(window, text="Pictures in the y-direction", anchor="w")
-y_size_lbl.grid(column=0, row=ysize_row)
+y_size_lbl.grid(column=0, row=y_size_row)
 
 y_size_entry = Entry(window)
-y_size_entry.grid(column=1, row=ysize_row)
+y_size_entry.grid(column=1, row=y_size_row)
 y_size_entry.insert(END, 36)
 
-y_size_row = ysize_row + 1
+first_image_row = y_size_row + 1
 first_image_lbl = Label(window, text="Index of the first image")
-first_image_lbl.grid(column=0, row=y_size_row)
+first_image_lbl.grid(column=0, row=first_image_row)
 
 index_entry = Entry(window)
-index_entry.grid(column=1, row=y_size_row)
+index_entry.grid(column=1, row=first_image_row)
 index_entry.insert(END, 1)
 
-format_row = y_size_row + 1
+format_row = first_image_row + 1
 pic_formats = Combobox(window, width=17)
 pic_formats.grid(column=1, row=format_row)
 pic_formats['values'] = ('png', 'jpg', 'tiff', 'bmp')
