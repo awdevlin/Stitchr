@@ -20,7 +20,7 @@ def clicked():
 
 def generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image):
     inspection_images = [Image.open(f) for f in file_locations(x_images, y_images, file_path, index_of_first_image)]
-    collage = generate_blankImage(inspection_images[0], x_images, y_images)
+    collage = generate_blank_image(inspection_images[0], x_images, y_images)
 
     x_position = 0
     y_position = 0
@@ -54,7 +54,7 @@ def file_locations(x_images, y_images, file_path, index_of_first_image):
     return image_name_list
 
 
-def generate_blankImage(first_image, x_images, y_images):
+def generate_blank_image(first_image, x_images, y_images):
     # create a blank image with the proper dimensions
     width, height = first_image.size
     total_width = width * x_images
