@@ -6,6 +6,7 @@ from PIL import Image
 
 def clicked():
     update_button("white", "black", "Stitching...")
+    update_status("This might take a minute")
     chip_name = id_entry.get()
     file_path = path_entry.get() + "/"
     x_images = int(x_size_entry.get())
@@ -14,6 +15,8 @@ def clicked():
     index_of_first_image = int(index_entry.get())
     generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image)
     update_button("black", "white", "Stitch")
+    window.after(5000, update_status("Done!"))
+    update_status("")
 
 
 def update_button(bg, fg, text):
@@ -21,6 +24,11 @@ def update_button(bg, fg, text):
     btn["fg"] = fg
     btn["text"] = text
     btn.update()
+
+
+def update_status(updated_text):
+    status["text"] = updated_text
+    status.update()
 
 
 def generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image):
@@ -123,5 +131,10 @@ formats_lbl.grid(column=0, row=format_row)
 btn_row = format_row + 1
 btn = Button(window, text="Stitch", bg="black", fg="white", width=20, command=clicked)
 btn.grid(column=3, row=btn_row)
+
+status_row = btn_row + 1
+status = Label(window, text="")
+status.grid(column=3, row=format_row)
+
 
 window.mainloop()
