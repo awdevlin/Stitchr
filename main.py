@@ -34,9 +34,11 @@ def update_status(updated_text):
 def generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image):
     inspection_images = [Image.open(f) for f in file_locations(x_images, y_images, file_path, index_of_first_image)]
     collage = generate_blank_image(inspection_images[0], x_images, y_images)
+    collage = fill_collage(0, 0, x_images, inspection_images, collage)
+    collage.save(file_path + chip_name + "." + picture_format)
 
-    x_position = 0
-    y_position = 0
+
+def fill_collage(x_position, y_position, x_images, inspection_images, collage):
     x_step = inspection_images[0].size[0]
 
     # paste all of the images into the collage in the correct location
@@ -48,9 +50,7 @@ def generate_collage(chip_name, file_path, x_images, y_images, picture_format, i
             x_step *= -1
             x_position += x_step
             y_position += pic.size[1]
-
-    collage.save(file_path + chip_name + "." + picture_format)
-
+    return collage
 
 def file_locations(x_images, y_images, file_path, index_of_first_image):
     image_name_list = []
@@ -119,7 +119,15 @@ index_entry = Entry(window)
 index_entry.grid(column=1, row=first_image_row)
 index_entry.insert(END, 1)
 
-format_row = first_image_row + 1
+number_of_chips_row = first_image_row + 1
+number_of_chips_lbl = Label(window, text="Number of CMUTs")
+number_of_chips_lbl.grid(column=0, row=number_of_chips_row)
+
+number_of_chips_entry = Entry(window)
+number_of_chips_entry.grid(column=1, row=number_of_chips_row)
+number_of_chips_entry.insert(END, 1)
+
+format_row = number_of_chips_row + 1
 pic_formats = Combobox(window, width=17)
 pic_formats.grid(column=1, row=format_row)
 pic_formats['values'] = ('png', 'jpg', 'tiff', 'bmp')
