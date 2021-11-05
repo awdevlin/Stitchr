@@ -7,7 +7,7 @@ from PIL import Image
 def clicked():
     update_button("white", "black", "Stitching...")
     update_status("This might take a minute")
-    chip_name = id_entry.get()
+    chip_name = id_entry.get().upper()
     file_path = path_entry.get() + "/"
     x_images = int(x_size_entry.get())
     y_images = int(y_size_entry.get())
@@ -19,10 +19,10 @@ def clicked():
     update_status("")
 
 
-def update_button(bg, fg, text):
+def update_button(bg, fg, new_text):
     btn["bg"] = bg
     btn["fg"] = fg
-    btn["text"] = text
+    btn["text"] = new_text
     btn.update()
 
 
@@ -33,12 +33,12 @@ def update_status(updated_text):
 
 def generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image):
     inspection_images = [Image.open(f) for f in file_locations(x_images, y_images, file_path, index_of_first_image)]
-    collage = generate_blank_image(inspection_images[0], x_images, y_images)
-    collage = fill_collage(0, 0, x_images, inspection_images, collage)
+    collage = paste_pictures(0, 0, x_images, y_images, inspection_images)
     collage.save(file_path + chip_name + "." + picture_format)
 
 
-def fill_collage(x_position, y_position, x_images, inspection_images, collage):
+def paste_pictures(x_position, y_position, x_images, y_images, inspection_images):
+    collage = generate_blank_image(inspection_images[0], x_images, y_images)
     x_step = inspection_images[0].size[0]
 
     # paste all of the images into the collage in the correct location
@@ -51,6 +51,7 @@ def fill_collage(x_position, y_position, x_images, inspection_images, collage):
             x_position += x_step
             y_position += pic.size[1]
     return collage
+
 
 def file_locations(x_images, y_images, file_path, index_of_first_image):
     image_name_list = []
@@ -93,7 +94,7 @@ id_lbl.grid(column=0, row=id_row)
 
 id_entry = Entry(window)
 id_entry.grid(column=1, row=id_row)
-id_entry.insert(END, "SM21A-R07-L128-H1")
+id_entry.insert(END, "SM20B-R01-L128-H1")
 
 xsize_row = id_row + 1
 x_size_lbl = Label(window, text="Pictures in the x-direction", anchor="w")
@@ -101,7 +102,7 @@ x_size_lbl.grid(column=0, row=xsize_row)
 
 x_size_entry = Entry(window)
 x_size_entry.grid(column=1, row=xsize_row)
-x_size_entry.insert(END, 7)
+x_size_entry.insert(END, 27)
 
 y_size_row = xsize_row + 1
 y_size_lbl = Label(window, text="Pictures in the y-direction", anchor="w")
@@ -109,7 +110,7 @@ y_size_lbl.grid(column=0, row=y_size_row)
 
 y_size_entry = Entry(window)
 y_size_entry.grid(column=1, row=y_size_row)
-y_size_entry.insert(END, 36)
+y_size_entry.insert(END, 9)
 
 first_image_row = y_size_row + 1
 first_image_lbl = Label(window, text="Index of the first image")
@@ -131,7 +132,7 @@ format_row = number_of_chips_row + 1
 pic_formats = Combobox(window, width=17)
 pic_formats.grid(column=1, row=format_row)
 pic_formats['values'] = ('png', 'jpg', 'tiff', 'bmp')
-pic_formats.current(0)
+pic_formats.current(1)
 
 formats_lbl = Label(window, text="Picture Format", anchor="w")
 formats_lbl.grid(column=0, row=format_row)
