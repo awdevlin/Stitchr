@@ -33,13 +33,24 @@ def update_status(updated_text):
 
 def generate_collage(chip_name, file_path, x_images, y_images, picture_format, index_of_first_image):
     inspection_images = [Image.open(f) for f in file_locations(x_images, y_images, file_path, index_of_first_image)]
-    collage = paste_pictures(0, 0, x_images, y_images, inspection_images)
+    collage = paste_pictures(x_images, y_images, inspection_images)
     collage.save(file_path + chip_name + "." + picture_format)
 
 
-def paste_pictures(x_position, y_position, x_images, y_images, inspection_images):
+def paste_pictures(x_images, y_images, inspection_images):
     collage = generate_blank_image(inspection_images[0], x_images, y_images)
     x_step = inspection_images[0].size[0]
+    y_position = 0
+    x_position = 0
+
+    # Determine the starting location and direction based on th\e radio button
+    # if top_left_radio is clicked, getvar() will give 1 so we start in the top left
+    # if top_right_radio is clicked, top_left_radio is not clicked so getvar() will give 0
+    if start_position.get() == 0:
+        x_position = 0
+    else:
+        x_position = inspection_images[0].size[0] * (x_images - 1)
+        x_step *= -1
 
     # paste all of the images into the collage in the correct location
     for pic in inspection_images:
@@ -78,7 +89,7 @@ def generate_blank_image(first_image, x_images, y_images):
 
 window = Tk()
 window.title("Stitchr")
-window.geometry('525x175')
+window.geometry('525x200')
 
 fp_row = 0
 file_path_lbl = Label(window, text="File Path", anchor="e")
@@ -86,7 +97,7 @@ file_path_lbl.grid(column=0, row=fp_row)
 
 path_entry = Entry(window, width=60)
 path_entry.grid(column=1, row=fp_row, columnspan=3)
-path_entry.insert(END, "C:/Users/Sonus User/Documents/ToupView/Demo Full")
+path_entry.insert(END, "E:/Inspection Images")
 
 id_row = fp_row + 1
 id_lbl = Label(window, text="CMUT ID")
@@ -137,13 +148,23 @@ pic_formats.current(1)
 formats_lbl = Label(window, text="Picture Format", anchor="w")
 formats_lbl.grid(column=0, row=format_row)
 
-btn_row = format_row + 1
+position_row = format_row + 1
+left_right_lbl = Label(window, text="Starting Position")
+left_right_lbl.grid(column=0, row=position_row)
+
+start_position = IntVar()
+top_left_radio = Radiobutton(window, text="Top Left", variable=start_position, value=0)
+top_left_radio.grid(column=1, row=position_row)
+
+top_right_radio = Radiobutton(window, text="Top Right", variable=start_position, value=1)
+top_right_radio.grid(column=3, row=position_row)
+
+btn_row = position_row + 1
 btn = Button(window, text="Stitch", bg="black", fg="white", width=20, command=clicked)
 btn.grid(column=3, row=btn_row)
 
 status_row = btn_row + 1
 status = Label(window, text="")
 status.grid(column=3, row=format_row)
-
 
 window.mainloop()
