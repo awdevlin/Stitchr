@@ -1,4 +1,3 @@
-import tkinter
 from tkinter import *
 from tkinter.ttk import Combobox
 from PIL import Image
